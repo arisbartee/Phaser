@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
+    <meta name="description" content="An interactive, visually stunning Hello World web experience with particle burst animations and modern CSS.">
+    <meta name="author" content="Phaser AI">
+    <meta name="keywords" content="Hello World, HTML, CSS, JavaScript, interactive, animation, canvas">
+    <meta property="og:title" content="Hello World - Interactive Web Experience">
+    <meta property="og:description" content="Experience a beautiful, modern Hello World with particle animations.">
+    <meta property="og:type" content="website">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -92,6 +98,28 @@
         @keyframes pulse-glow {
             0% { transform: scale(1); opacity: 0.2; }
             100% { transform: scale(1.5); opacity: 0.35; }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 3rem 2rem;
+            }
+            h1 {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 2.5rem 1.5rem;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
