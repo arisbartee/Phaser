@@ -1,4 +1,4 @@
-# Phaser
+# Phaser <a href="https://github.com/arisbartee/Phaser" class="btn" style="font-size: 1rem; padding: 0.6rem 1.2rem; margin-left: 20px; vertical-align: middle;">🔫 View on GitHub</a>
 
 ![Phaser Workshop](docs/assets/workshop.png)
 
