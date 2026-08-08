@@ -121,9 +121,20 @@
         .btn-reset:hover {
             background: rgba(255, 255, 255, 0.8);
         }
+
+        #scrambleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
+    <canvas id="scrambleCanvas"></canvas>
     <div class="glass-card">
         <h1>Text Scrambler</h1>
         <div class="input-group">
@@ -134,5 +145,48 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const canvas = document.getElementById('scrambleCanvas');
+        const ctx = canvas.getContext('2d');
+        const textInput = document.getElementById('textInput');
+        const btnScramble = document.getElementById('btnScramble');
+        const btnReset = document.getElementById('btnReset');
+
+        let currentText = '';
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+            // Optionally, redraw everything here if needed after resize
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (currentText) {
+                ctx.font = 'bold 3rem Outfit, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                // Render the text normally for now
+                ctx.fillText(currentText, window.innerWidth / 2, window.innerHeight / 2 - 150);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        btnScramble.addEventListener('click', () => {
+            currentText = textInput.value;
+        });
+
+        // Start the animation loop
+        animate();
+    </script>
 </body>
 </html>
