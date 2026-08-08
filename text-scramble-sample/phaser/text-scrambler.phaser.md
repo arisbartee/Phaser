@@ -40,9 +40,21 @@ This is a self-contained phase file. If you are an AI assistant tasked with exec
 **Prompt:** Implement the fantastic and silly scrambling effects in the JavaScript. When the user clicks "Scramble", break the text into individual letter objects. Assign each letter a random starting velocity (x and y), a bouncy physics simulation (gravity and elasticity when hitting the canvas bounds), and logic to constantly change its color to random vibrant colors over time. Render each letter at its updated physics-driven position in the animation loop.
 **Gate:** STOP & COMMIT
 
+***After Action***
+- Implemented a `Letter` class to handle individual character physics (position, velocity, gravity, elasticity) and color state.
+- Updated the "Scramble" button click handler to break input text into individual `Letter` objects, calculating initial centered positions.
+- Added color-shifting logic within the `Letter.update()` method to cycle through vibrant HSL hues.
+- Implemented bounce physics in `Letter.update()` to handle collisions with all four edges of the window canvas.
+- Modified the `animate()` loop to update and draw each `Letter` object at its physics-driven position.
+
 ### 4. Reset Functionality
 **Prompt:** Implement the functionality for the "Reset" button. When clicked, it should stop the chaotic bouncing and clear the input field and the canvas entirely, returning the UI to a clean state ready for the user to type a new phrase. Make sure the transition feels polished.
 **Gate:** STOP & COMMIT
+
+***After Action***
+- Added a click event listener to the "Reset" button in `index.html`.
+- Cleared the `letters` array to instantly stop the bouncing animation and clear the canvas.
+- Cleared the `textInput.value` and focused on the input field to make it ready for a new phrase, ensuring a polished transition back to a clean state.
 
 ## Final Step: Documentation
 Once all prompts above have been executed and have their corresponding `***After Action***` blocks, evaluate the accumulated work and create/update documentation in `./docs/` if warranted.

@@ -153,14 +153,63 @@
         const btnScramble = document.getElementById('btnScramble');
         const btnReset = document.getElementById('btnReset');
 
-        let currentText = '';
+        let letters = [];
+
+        class Letter {
+            constructor(char, x, y) {
+                this.char = char;
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 30; 
+                this.vy = (Math.random() - 0.5) * 30 - 10; 
+                this.gravity = 0.8;
+                this.elasticity = 0.7 + Math.random() * 0.2;
+                this.hue = Math.random() * 360;
+                this.color = `hsl(${this.hue}, 100%, 60%)`;
+            }
+
+            update() {
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                this.hue += 5;
+                if (this.hue > 360) this.hue -= 360;
+                this.color = `hsl(${this.hue}, 100%, 60%)`;
+
+                if (this.y + 20 > window.innerHeight) { 
+                    this.y = window.innerHeight - 20;
+                    this.vy = -this.vy * this.elasticity;
+                    this.vx *= 0.95;
+                }
+                if (this.y - 20 < 0) {
+                    this.y = 20;
+                    this.vy = -this.vy * this.elasticity;
+                }
+                if (this.x < 0) {
+                    this.x = 0;
+                    this.vx = -this.vx * this.elasticity;
+                }
+                if (this.x > window.innerWidth) {
+                    this.x = window.innerWidth;
+                    this.vx = -this.vx * this.elasticity;
+                }
+            }
+
+            draw(ctx) {
+                ctx.font = 'bold 3rem Outfit, sans-serif';
+                ctx.fillStyle = this.color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.char, this.x, this.y);
+            }
+        }
 
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
             canvas.width = window.innerWidth * dpr;
             canvas.height = window.innerHeight * dpr;
             ctx.scale(dpr, dpr);
-            // Optionally, redraw everything here if needed after resize
         }
 
         window.addEventListener('resize', resizeCanvas);
@@ -169,20 +218,38 @@
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            if (currentText) {
-                ctx.font = 'bold 3rem Outfit, sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                // Render the text normally for now
-                ctx.fillText(currentText, window.innerWidth / 2, window.innerHeight / 2 - 150);
-            }
+            letters.forEach(letter => {
+                letter.update();
+                letter.draw(ctx);
+            });
 
             requestAnimationFrame(animate);
         }
 
         btnScramble.addEventListener('click', () => {
-            currentText = textInput.value;
+            const text = textInput.value;
+            letters = [];
+            if (!text) return;
+
+            ctx.font = 'bold 3rem Outfit, sans-serif';
+            const totalWidth = ctx.measureText(text).width;
+            let startX = (window.innerWidth - totalWidth) / 2;
+            const startY = window.innerHeight / 2 - 150;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const charWidth = ctx.measureText(char).width;
+                if (char !== ' ') {
+                    letters.push(new Letter(char, startX + charWidth / 2, startY));
+                }
+                startX += charWidth;
+            }
+        });
+
+        btnReset.addEventListener('click', () => {
+            letters = [];
+            textInput.value = '';
+            textInput.focus();
         });
 
         // Start the animation loop
